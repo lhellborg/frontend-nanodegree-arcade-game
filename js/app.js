@@ -55,20 +55,20 @@ Player.prototype.render = function() {
  
  Player.prototype.handleInput = function(userInput) {
     // stay inside the canvas
-    if (this.x > 0 && this.x < 505 && this.y > 100 && this.y < 606) 
+    if (this.x >= 0 && this.x <= 500 && this.y >= 100 && this.y <= 600) 
     {
         if (userInput === "left") {
-            this.x += -20;
+            this.x += -10;
         }
         else if (userInput === "up")
         {
-            this.y += -20;
+            this.y += -10;
         }
         else if (userInput === "right") {
-            this.x += 20;
+            this.x += 10;
         } 
         else if (userInput === "down") {
-            this.y += 20;
+            this.y += 10;
         }
     }  
     // the player has reached the water
