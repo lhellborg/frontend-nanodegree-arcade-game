@@ -29,7 +29,19 @@ var Engine = (function(global) {
     canvas.height = 606;
     doc.body.appendChild(canvas);
 
-    /* This function serves as the kickoff point for the game loop itself
+    // To get the canvas-relative of a click, you need to subtract the offsetLeft and offsetTop values 
+    // from clientX and clientY. Check out the example code below.
+
+    var c = document.querySelector("canvas");
+
+    function handleMouseClick(evt) {
+            x = evt.clientX - c.offsetLeft;
+            y = evt.clientY - c.offsetTop;
+            console.log("x,y:"+x+","+y);
+    }
+    c.addEventListener("click", handleMouseClick, false);
+
+     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
     function main() {
@@ -181,3 +193,5 @@ var Engine = (function(global) {
      */
     global.ctx = ctx;
 })(this);
+
+
