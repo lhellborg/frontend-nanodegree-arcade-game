@@ -39,8 +39,8 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 var Player = function() {
     // initial location
-    this.x = 250;
-    this.y = 400;
+    this.x = 200;
+    this.y = 375;
     // picture of the player
     this.sprite = 'images/char-boy.png';
 };
@@ -55,26 +55,35 @@ Player.prototype.render = function() {
  
  Player.prototype.handleInput = function(userInput) {
     // stay inside the canvas
-    if (this.x >= 0 && this.x <= 500 && this.y >= 100 && this.y <= 600) 
+    if (this.x >= 0 && this.x <= 400 && this.y >= 10 && this.y <= 375) 
     {
-        if (userInput === "left") {
-            this.x += -10;
-        }
-        else if (userInput === "up")
+        if (userInput === "left" && this.x > 0) 
         {
-            this.y += -10;
+            this.x += -100;
         }
-        else if (userInput === "right") {
-            this.x += 10;
+        else if (userInput === "up" && this.y > 10)
+        {
+            this.y += -80;
+        }
+        else if (userInput === "right" && this.x < 400) 
+        {
+            this.x += 100;
         } 
-        else if (userInput === "down") {
-            this.y += 10;
+        else if (userInput === "down" && this.y < 375) 
+        {
+            this.y += 80;
         }
     }  
     // the player has reached the water
-    else if (this.x > 0 && this.x < 505 && this.y < 99) {
-        this.x = 250;
-        this.y = 400;
+    if (this.x > -10 && this.x < 405 && this.y < 0) 
+    {
+        this.x = 200;
+        this.y = 375;
+    }
+    //the player is outside of the canvas
+    else 
+    {
+
     }
  };
 
