@@ -12,7 +12,7 @@ var Enemy = function(x, y, speed) {
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
+Enemy.prototype.update = function(dt, player) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
@@ -23,9 +23,17 @@ Enemy.prototype.update = function(dt) {
         var move = this.speed * dt;
         this.x += move;
     }
-    else //restart the bug at teh beginning of the canvas
+    else //restart the bug at the beginning of the canvas
     {
         this.x = 0;
+    };
+
+    //upon collision with the player the player have to restart
+    var plx = player.x;
+    var ply = player.y;
+    if (this.x < (plx+30) && this.x > (plx-70) && this.y === ply) {
+        player.x = 200;
+        player.y = 375;
     };
 };
 
@@ -80,18 +88,14 @@ Player.prototype.render = function() {
         this.x = 200;
         this.y = 375;
     }
-    //the player is outside of the canvas
-    else 
-    {
 
-    }
  };
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
-var bug1 = new Enemy(0, 140, 50);
-var bug2 = new Enemy(0, 225, 100);
-var bug3 = new Enemy(0, 60, 175);
+var bug1 = new Enemy(0, 55, 175);
+var bug2 = new Enemy(0, 135, 50);
+var bug3 = new Enemy(0, 215, 100);
 var allEnemies = [bug1, bug2, bug3];
 
 // Place the player object in a variable called player
