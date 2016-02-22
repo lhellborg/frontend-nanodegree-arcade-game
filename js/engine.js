@@ -231,7 +231,7 @@ var Engine = (function(global) {
         else 
         {
             lastTime = Date.now();
-            player = new Player(imagePlayer);
+            player = new Player(imagePlayer, 3, 0);
             main();   
         }
     }    

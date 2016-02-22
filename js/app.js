@@ -52,62 +52,65 @@ Enemy.prototype.render = function()
 var imagePlayer
 
 
-var Player = function(imagePlayer) 
+var Player = function(imagePlayer, lives, success) 
 {
     // initial location
     this.x = 200;
     this.y = 375;
     // picture of the player
     this.sprite = imagePlayer;
+    this.lives = lives;
+    this.oldLife = lives + 1;
+    this.success = success;
+    this.oldSuccess = success - 1;
 };
 
 // the variable oldLife keeps track of how many lives so the old score can be erased by painting over it
-var lives = 3;
-var oldLife = lives + 1;
+
 Player.prototype.score = function() 
 {
-    if (lives != oldLife) 
+    if (this.lives != this.oldLife) 
     {
         ctx.font = "36px Impact";
         ctx.fillStyle = "white";
-        ctx.fillText("Lives left: " + oldLife, 100, 40);
+        ctx.fillText("Lives left: " + this.oldLife, 100, 40);
         ctx.fillStyle = "black";
-        ctx.fillText("Lives left: " + lives, 100, 40);
-        oldLife = lives;
-        return oldLife;
+        ctx.fillText("Lives left: " + this.lives, 100, 40);
+        this.oldLife = this.lives;
     }    
 };
 
 // the variable oldSuccess keep track of how many points so the old score can be erased by painting over it
-var success = 0
-var oldSuccess;
+
 Player.prototype.point = function() 
 {
-    if (success != oldSuccess) 
+    if (this.success != this.oldSuccess) 
     {
         ctx.font = "36px Impact";
         ctx.fillStyle = "white";
-        ctx.fillText("Points: " + oldSuccess, 340, 40);
+        ctx.fillText("Points: " + this.oldSuccess, 340, 40);
         ctx.fillStyle = "black";
-        ctx.fillText("Points: " + success, 340, 40);
-        oldSuccess = success;
-        return oldSuccess;
+        ctx.fillText("Points: " + this.success, 340, 40);
+        this.oldSuccess = this.success;
     }    
 };
 
+Player.prototype.addPoints = function() {
+    this.success += 1;
+}
+
 Player.prototype.update = function() 
 {
-    return (lives < 1);
+    return (this.lives < 1);
 };
 
 Player.prototype.dead = function() 
 {
-    if (lives > 0) 
+    if (this.lives > 0) 
     {
-        lives -= 1;
-        player.x = 200;
-        player.y = 375;
-        return lives;
+        this.lives -= 1;
+        this.x = 200;
+        this.y = 375;
     }
 };
 
@@ -143,7 +146,7 @@ Player.prototype.render = function()
     {
         this.x = 200;
         this.y = 375;
-        return success += 1;
+        this.addPoints();
     }
 
  };
@@ -163,7 +166,7 @@ Thing.prototype.update = function() {
     var ply = player.y;
     if (this.x === plx  && this.y === ply) 
     {
-        success += 1;
+        player.addPoints();
         if (this.x < 350) 
         {
             this.x += 200;
