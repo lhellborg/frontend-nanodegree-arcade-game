@@ -164,7 +164,14 @@ Thing.prototype.update = function() {
     if (this.x === plx  && this.y === ply) 
     {
         success += 1;
-        this.x += 100;
+        if (this.x < 350) 
+        {
+            this.x += 200;
+        } 
+        else 
+        {
+            this.x = 0;
+        }
     };
 };
 
@@ -179,10 +186,8 @@ Thing.prototype.render = function()
 var bug1 = new Enemy(0, 55, 275);
 var bug2 = new Enemy(0, 135, 50);
 var bug3 = new Enemy(0, 215, 100);
-var bug4 = new Enemy(200, 55, 25);
-var bug5 = new Enemy(200, 135, 125);
-var bug6 = new Enemy(200, 215, 400);
-var allEnemies = [bug1, bug2, bug3];
+var bug4 = new Enemy(0, 55, 25);
+var allEnemies = [bug1, bug2, bug3, bug4];
 
 // Place the player object in a variable called player
 //the new Player object is defined in init funciton in init to be able to choose player image
@@ -190,8 +195,8 @@ var player
 
 //set the x position between 0 - 4 adn y position between 0-2
 var key = new Thing(2, 0, "images/Key.png");
-var heart = new Thing(4, 2, 'images/Heart.png');
-var gem = new Thing(1, 1, 'images/GemBlue.png');
+var heart = new Thing(1, 2, 'images/Heart.png');
+var gem = new Thing(4, 1, 'images/GemBlue.png');
 var allThings = [key, heart, gem];
 
 
