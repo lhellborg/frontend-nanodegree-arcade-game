@@ -1,5 +1,6 @@
 // Enemies our player must avoid
-var Enemy = function(x, y, speed) {
+var Enemy = function(x, y, speed) 
+{
     //initial location
     this.x = x;
     this.y = y;
@@ -12,7 +13,8 @@ var Enemy = function(x, y, speed) {
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
+Enemy.prototype.update = function(dt) 
+{
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
@@ -31,37 +33,46 @@ Enemy.prototype.update = function(dt) {
     //upon collision with the player the player have to restart
     var plx = player.x;
     var ply = player.y;
-    if (this.x < (plx+30) && this.x > (plx-70) && this.y === ply) {
+    if (this.x < (plx+30) && this.x > (plx-70) && this.y === ply) 
+    {
         player.dead();
     };
 };
 
 
 // Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
+Enemy.prototype.render = function() 
+{
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
-var Player = function() {
+var imagePlayer
+
+
+var Player = function(imagePlayer) 
+{
     // initial location
     this.x = 200;
     this.y = 375;
     // picture of the player
-    this.sprite = 'images/char-boy.png';
+    this.sprite = imagePlayer;
 };
 
 // the variable oldLife keeps track of how many lives so the old score can be erased by painting over it
+var lives = 3;
 var oldLife = lives + 1;
-Player.prototype.score = function() {
-    if (lives != oldLife) {
+Player.prototype.score = function() 
+{
+    if (lives != oldLife) 
+    {
         ctx.font = "36px Impact";
         ctx.fillStyle = "white";
-        ctx.fillText("Lives left: " + oldLife, 40, 40);
+        ctx.fillText("Lives left: " + oldLife, 100, 40);
         ctx.fillStyle = "black";
-        ctx.fillText("Lives left: " + lives, 40, 40);
+        ctx.fillText("Lives left: " + lives, 100, 40);
         oldLife = lives;
         return oldLife;
     }    
@@ -70,24 +81,27 @@ Player.prototype.score = function() {
 // the variable oldSuccess keep track of how many points so the old score can be erased by painting over it
 var success = 0
 var oldSuccess;
-Player.prototype.point = function() {
-    if (success != oldSuccess) {
+Player.prototype.point = function() 
+{
+    if (success != oldSuccess) 
+    {
         ctx.font = "36px Impact";
         ctx.fillStyle = "white";
-        ctx.fillText("Points: " + oldSuccess, 240, 40);
+        ctx.fillText("Points: " + oldSuccess, 340, 40);
         ctx.fillStyle = "black";
-        ctx.fillText("Points: " + success, 240, 40);
+        ctx.fillText("Points: " + success, 340, 40);
         oldSuccess = success;
         return oldSuccess;
     }    
 };
 
-Player.prototype.update = function() {
+Player.prototype.update = function() 
+{
     return (lives < 1);
 };
 
-var lives = 3;
-Player.prototype.dead = function() {
+Player.prototype.dead = function() 
+{
     if (lives > 0) 
     {
         lives -= 1;
@@ -97,11 +111,13 @@ Player.prototype.dead = function() {
     }
 };
 
-Player.prototype.render = function() {
+Player.prototype.render = function() 
+{
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
  
- Player.prototype.handleInput = function(userInput) {
+ Player.prototype.handleInput = function(userInput)
+ {
     // stay inside the canvas
     if (this.x >= 0 && this.x <= 400 && this.y >= 10 && this.y <= 375) 
     {
@@ -140,13 +156,13 @@ var bug3 = new Enemy(0, 215, 100);
 var allEnemies = [bug1, bug2, bug3];
 
 // Place the player object in a variable called player
-var player = new Player();
-
+var player
 
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function(e) {
+document.addEventListener('keyup', function(e) 
+{
     var allowedKeys = {
         37: 'left',
         38: 'up',
