@@ -41,6 +41,8 @@ var Engine = (function(global) {
     }
     c.addEventListener("click", handleMouseClick, false);
 
+    var gameOver = true;
+
      /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
@@ -58,17 +60,21 @@ var Engine = (function(global) {
          * our update function since it may be used for smooth animation.
          */
         update(dt);
-        render();
 
-        /* Set our lastTime variable which is used to determine the time delta
-         * for the next time this function is called.
-         */
-        lastTime = now;
+        // the animation goes on unless gameOver = true from the gameEnd function 
+         if (gameOver) {
+            render();
 
-        /* Use the browser's requestAnimationFrame function to call this
-         * function again as soon as the browser is able to draw another frame.
-         */
-        win.requestAnimationFrame(main);
+            /* Set our lastTime variable which is used to determine the time delta
+             * for the next time this function is called.
+             */
+            lastTime = now;
+
+            /* Use the browser's requestAnimationFrame function to call this
+             * function again as soon as the browser is able to draw another frame.*/
+         
+            win.requestAnimationFrame(main);
+        }
     }
 
     /* This function does some initial setup that should only occur once,
@@ -108,7 +114,7 @@ var Engine = (function(global) {
         });
         var finished = player.update();
         if(finished) {
-            reset();
+            gameEnd();
         }
         player.score();
     }
@@ -174,14 +180,23 @@ var Engine = (function(global) {
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
+
     function reset() {
+
+    }
+
+    /* This function shows the game over screen when the lives are finished */
+    function gameEnd() {
         
+        gameOver = false;
         ctx.font = "36px Impact";
         ctx.fillStyle = "white";
         ctx.fillText("Game over", 200, 300);
         ctx.lineWidth = 3;
         ctx.strokeStyle = "black";
         ctx.strokeText("Game over",  200, 300);
+        return gameOver;
+
     }
 
     /* Go ahead and load all of the images we know we're going to need to

@@ -57,6 +57,7 @@ var Player = function() {
 var oldLife = lives + 1
 Player.prototype.score = function() {
     if (lives != oldLife) {
+        ctx.font = "36px Impact";
         ctx.fillStyle = "white";
         ctx.fillText("Lives left: " + oldLife, 40, 40);
         ctx.fillStyle = "black";
