@@ -12,7 +12,7 @@ var Enemy = function(x, y, speed) {
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt, player) {
+Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
@@ -32,10 +32,10 @@ Enemy.prototype.update = function(dt, player) {
     var plx = player.x;
     var ply = player.y;
     if (this.x < (plx+30) && this.x > (plx-70) && this.y === ply) {
-        player.x = 200;
-        player.y = 375;
+        player.dead();
     };
 };
+
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
@@ -53,8 +53,32 @@ var Player = function() {
     this.sprite = 'images/char-boy.png';
 };
 
-Player.prototype.update = function() {
+// keep track of how many lives
+var oldLife = lives + 1
+Player.prototype.score = function() {
+    if (lives != oldLife) {
+        ctx.fillStyle = "white";
+        ctx.fillText("Lives left: " + oldLife, 40, 40);
+        ctx.fillStyle = "black";
+        ctx.fillText("Lives left: " + lives, 40, 40);
+        oldLife = lives;
+        return oldLife;
+    }    
+};
 
+Player.prototype.update = function() {
+    return (lives < 1);
+};
+
+var lives = 3;
+Player.prototype.dead = function() {
+    if (lives > 0) 
+    {
+        lives -= 1;
+        player.x = 200;
+        player.y = 375;
+        return lives;
+    }
 };
 
 Player.prototype.render = function() {

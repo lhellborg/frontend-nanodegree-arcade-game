@@ -30,7 +30,7 @@ var Engine = (function(global) {
     doc.body.appendChild(canvas);
 
     // To get the canvas-relative of a click, you need to subtract the offsetLeft and offsetTop values 
-    // from clientX and clientY. Check out the example code below.
+    // from clientX and clientY. 
 
     var c = document.querySelector("canvas");
 
@@ -57,7 +57,7 @@ var Engine = (function(global) {
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
-        update(dt, player);
+        update(dt);
         render();
 
         /* Set our lastTime variable which is used to determine the time delta
@@ -90,8 +90,8 @@ var Engine = (function(global) {
      * functionality this way (you could just implement collision detection
      * on the entities themselves within your app.js file).
      */
-    function update(dt, player) {
-        updateEntities(dt, player);
+    function update(dt) {
+        updateEntities(dt);
         // checkCollisions();
     }
 
@@ -102,11 +102,15 @@ var Engine = (function(global) {
      * the data/properties related to the object. Do your drawing in your
      * render methods.
      */
-    function updateEntities(dt, player) {
+    function updateEntities(dt) {
         allEnemies.forEach(function(enemy) {
-            enemy.update(dt, player);
+            enemy.update(dt);
         });
-        player.update();
+        var finished = player.update();
+        if(finished) {
+            reset();
+        }
+        player.score();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -171,7 +175,13 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        // noop
+        
+        ctx.font = "36px Impact";
+        ctx.fillStyle = "white";
+        ctx.fillText("Game over", 200, 300);
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = "black";
+        ctx.strokeText("Game over",  200, 300);
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -183,7 +193,16 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-catgirl.png',
+        'images/char-horngirl.png',
+        'images/char-pinkgirl.png',
+        'images/char-princessgirl.png',
+        'images/Gem blue.png',
+        'images/Heart.png',
+        'images/Rock.png',
+        'images/Selector.png',
+        'images/Star.png'
     ]);
     Resources.onReady(init);
 
