@@ -53,8 +53,8 @@ var Player = function() {
     this.sprite = 'images/char-boy.png';
 };
 
-// keep track of how many lives
-var oldLife = lives + 1
+// the variable oldLife keeps track of how many lives so the old score can be erased by painting over it
+var oldLife = lives + 1;
 Player.prototype.score = function() {
     if (lives != oldLife) {
         ctx.font = "36px Impact";
@@ -64,6 +64,21 @@ Player.prototype.score = function() {
         ctx.fillText("Lives left: " + lives, 40, 40);
         oldLife = lives;
         return oldLife;
+    }    
+};
+
+// the variable oldSuccess keep track of how many points so the old score can be erased by painting over it
+var success = 0
+var oldSuccess;
+Player.prototype.point = function() {
+    if (success != oldSuccess) {
+        ctx.font = "36px Impact";
+        ctx.fillStyle = "white";
+        ctx.fillText("Points: " + oldSuccess, 240, 40);
+        ctx.fillStyle = "black";
+        ctx.fillText("Points: " + success, 240, 40);
+        oldSuccess = success;
+        return oldSuccess;
     }    
 };
 
@@ -107,11 +122,12 @@ Player.prototype.render = function() {
             this.y += 80;
         }
     }  
-    // the player has reached the water
+    // the player has reached the water and gets an extra point in the success variable
     if (this.x > -10 && this.x < 405 && this.y < 0) 
     {
         this.x = 200;
         this.y = 375;
+        return success += 1;
     }
 
  };

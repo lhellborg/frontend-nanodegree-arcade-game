@@ -116,7 +116,10 @@ var Engine = (function(global) {
         if(finished) {
             gameEnd();
         }
+        //keep track of the lives
         player.score();
+        //keep track of the points
+        player.point();
     }
 
     /* This function initially draws the "game level", it will then call
