@@ -148,15 +148,51 @@ Player.prototype.render = function()
 
  };
 
+var Thing = function(x, y, image) 
+{
+    //initial location
+    this.x = x * 100;
+    this.y = y * 80 + 55;
+    //the image choosen
+    this.sprite = image;
+}; 
+
+// when thing is taken by the player, the points update with 1 and the thing moves to the right
+Thing.prototype.update = function() {
+    var plx = player.x;
+    var ply = player.y;
+    if (this.x === plx  && this.y === ply) 
+    {
+        success += 1;
+        this.x += 100;
+    };
+};
+
+Thing.prototype.render = function() 
+{
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
-var bug1 = new Enemy(0, 55, 175);
+var bug1 = new Enemy(0, 55, 275);
 var bug2 = new Enemy(0, 135, 50);
 var bug3 = new Enemy(0, 215, 100);
+var bug4 = new Enemy(200, 55, 25);
+var bug5 = new Enemy(200, 135, 125);
+var bug6 = new Enemy(200, 215, 400);
 var allEnemies = [bug1, bug2, bug3];
 
 // Place the player object in a variable called player
-var player
+//the new Player object is defined in init funciton in init to be able to choose player image
+var player  
+
+//set the x position between 0 - 4 adn y position between 0-2
+var key = new Thing(2, 0, "images/Key.png");
+var heart = new Thing(4, 2, 'images/Heart.png');
+var gem = new Thing(1, 1, 'images/GemBlue.png');
+var allThings = [key, heart, gem];
 
 
 // This listens for key presses and sends the keys to your
