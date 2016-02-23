@@ -164,6 +164,7 @@ var Thing = function(x, y, image)
     this.y = y * 80 + 55;
     //the image choosen
     this.sprite = image;
+    this.colour = 1; 
 }; 
 
 // when thing is taken by the player, the points update with 1 and the thing moves to the right
@@ -173,15 +174,54 @@ Thing.prototype.update = function() {
     if (this.x === plx  && this.y === ply) 
     {
         player.addPoints();
-        if (this.x < 350) 
+        gem.changeColour();
+        thing.changeThing();
+        if (this.x < 150) 
         {
-            this.x += 200;
+            this.x += 300;
         } 
         else 
         {
             this.x = 0;
         }
     };
+};
+
+Thing.prototype.changeThing = function() 
+{
+    {
+        if (this.colour % 3 === 0) {
+            this.sprite = 'images/Key.png';
+        }
+        else if (this.colour % 2 === 0) 
+        {
+            this.sprite = 'images/Rock.png';
+        }
+        else 
+        {
+            this.sprite = 'images/Star.png';
+        }
+    }
+    this.colour += 1;
+};
+
+//changes colour of the gem
+Thing.prototype.changeColour = function() 
+{
+    {
+        if (this.colour % 3 === 0) {
+            this.sprite = 'images/GemBlue.png';
+        }
+        else if (this.colour % 2 === 0) 
+        {
+            this.sprite = 'images/GemGreen.png';
+        }
+        else 
+        {
+            this.sprite = 'images/GemOrange.png';
+        }
+    }
+    this.colour += 1;
 };
 
 Thing.prototype.render = function() 
@@ -221,12 +261,12 @@ var allEnemies = [bug1, bug2, bug3, bug4];
 //the new Player object is defined in init funciton in init to be able to choose player image
 var player  
 
-//set the x position between 0 - 4 adn y position between 0-2
-var key = new Thing(2, 0, "images/Key.png");
-var gem = new Thing(4, 1, 'images/GemBlue.png');
-var allThings = [key, gem];
+//set the x position between 0 - 4 and y position between 0-2
+var thing = new Thing(0, 0, "images/Key.png");
+var gem = new Thing(1, 1, 'images/GemBlue.png');
+var allThings = [thing, gem];
 
-var heart = new XLife(1, 2, 'images/Heart.png');
+var heart = new XLife(3, 2, 'images/Heart.png');
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

@@ -308,6 +308,8 @@ var Engine = (function(global) {
         'images/char-pinkgirl.png',
         'images/char-princessgirl.png',
         'images/GemBlue.png',
+        'images/GemGreen.png',
+        'images/GemOrange.png',
         'images/Heart.png',
         'images/Key.png',
         'images/Rock.png',
