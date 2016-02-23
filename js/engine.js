@@ -13,8 +13,7 @@
  * the canvas' context (ctx) object globally available to make writing app.js
  * a little simpler to work with.
  */
-var Engine = (function (global)
-{
+var Engine = (function (global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
      * set the canvas elements height/width and add it to the DOM.
@@ -29,15 +28,19 @@ var Engine = (function (global)
     canvas.height = 606;
     doc.body.appendChild(canvas);
 
-    // To get the canvas-relative of a click, you need to subtract the offsetLeft and offsetTop values 
-    // from clientX and clientY. 
-
     var c = document.querySelector("canvas");
+
+    /* the variables playerChosen and gameOver are both boolean which will change the state when
+    * the either the player has been chosen or teh lives has run out for the player
+    */
     var playerChosen = false;
     var gameOver = false;
 
-    function handleMouseClick(evt)
-    {
+
+    /* To get the canvas-relative of a click, you need to subtract the offsetLeft and offsetTop values
+    * from clientX and clientY.
+    */
+    function handleMouseClick(evt) {
         x = evt.clientX - c.offsetLeft;
         y = evt.clientY - c.offsetTop;
         console.log("x,y:" + x + "," + y);
@@ -47,8 +50,7 @@ var Engine = (function (global)
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
-    function main()
-    {
+    function main() {
         /* Get our time delta information which is required if your game
          * requires smooth animation. Because everyone's computer processes
          * instructions at different speeds we need a constant value that
@@ -63,9 +65,9 @@ var Engine = (function (global)
          */
         update(dt);
 
-        // the animation goes on unless gameOver = true from the gameEnd function 
-        if (!gameOver)
-        {
+        /* the animation goes on unless gameOver = true from the gameEnd function
+        */
+        if (!gameOver) {
             render();
 
             /* Set our lastTime variable which is used to determine the time delta
@@ -84,10 +86,15 @@ var Engine = (function (global)
      * particularly setting the lastTime variable that is required for the
      * game loop.
      */
-    function init()
-    {
+    function init() {
         reset();
+
+        /* This function allow us to choose the image of the player
+        */
         choosePlayer();
+
+        /* This function will wait until we have chosen a player by clicking on it
+        */
         waitForPlayer();
     }
 
@@ -100,8 +107,7 @@ var Engine = (function (global)
      * functionality this way (you could just implement collision detection
      * on the entities themselves within your app.js file).
      */
-    function update(dt)
-    {
+    function update(dt) {
         updateEntities(dt);
         // checkCollisions();
     }
@@ -113,22 +119,18 @@ var Engine = (function (global)
      * the data/properties related to the object. Do your drawing in your
      * render methods.
      */
-    function updateEntities(dt)
-    {
-        allThings.forEach(function (thing)
-        {
+    function updateEntities(dt) {
+        allThings.forEach(function (thing) {
             thing.update(dt);
         });
 
-        allEnemies.forEach(function (enimy)
-        {
-            enimy.update(dt);
+        allEnemies.forEach(function (enemy) {
+            enemy.update(dt);
         });
 
         //keep track to see if the lives are finished
         var finished = player.update();
-        if (finished)
-        {
+        if (finished) {
             gameEnd();
         }
     }
@@ -139,8 +141,7 @@ var Engine = (function (global)
      * they are flipbooks creating the illusion of animation but in reality
      * they are just drawing the entire screen over and over.
      */
-    function render()
-    {
+    function render() {
         /* This array holds the relative URL to the image used
          * for that particular row of the game level.
          */
@@ -160,10 +161,8 @@ var Engine = (function (global)
          * and, using the rowImages array, draw the correct image for that
          * portion of the "grid"
          */
-        for (row = 0; row < numRows; row++)
-        {
-            for (col = 0; col < numCols; col++)
-            {
+        for (row = 0; row < numRows; row++) {
+            for (col = 0; col < numCols; col++) {
                 /* The drawImage function of the canvas' context element
                  * requires 3 parameters: the image to draw, the x coordinate
                  * to start drawing and the y coordinate to start drawing.
@@ -182,31 +181,26 @@ var Engine = (function (global)
      * tick. Its purpose is to then call the render functions you have defined
      * on your enemy and player entities within app.js
      */
-    function renderEntities()
-    {
+    function renderEntities() {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
-        allThings.forEach(function (thing)
-        {
+        allThings.forEach(function (thing) {
             thing.render();
         });
 
-        allEnemies.forEach(function (enemy)
-        {
+        allEnemies.forEach(function (enemy) {
             enemy.render();
         });
 
         player.render();
     }
 
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
+    /* This function handle game start state and displays the different players you can choose.
+    * It's only called once by the init() method.
      */
 
-    function reset()
-    {
+    function reset() {
         ctx.textAlign = "center";
         ctx.font = "20px Impact";
         ctx.fillStyle = "blue";
@@ -218,52 +212,44 @@ var Engine = (function (global)
         ctx.drawImage(Resources.get("images/char-princessgirl.png"), 400, 375);
     }
 
-    //wait for player to be chosen
-    function waitForPlayer()
-    {
-        if (!playerChosen)
-        {
+    /* This function waits for the playerChosen variable to be true by the choosePlayer function and as long as no click has
+    * been made, on one of the images, the function will pause.
+    * when the player has been chosen (playerChosen = true) then the lastTime variable will be set to Date.now and the
+    * player object will be instantiated by the imagePlayer (chosen image in hte choosePlayer function),
+    * number of lives and number of starting points.
+    * The main function will be initiated.
+    */
+    function waitForPlayer() {
+        if (!playerChosen) {
             setTimeout(waitForPlayer, 250);
-        }
-        else
-        {
+        } else {
             lastTime = Date.now();
             player = new Player(imagePlayer, 3, 0);
             main();
         }
     }
 
-    //choose a player to start the game with. variable c is only defined here so can not move to app.js
-    function choosePlayer()
-    {
-        c.addEventListener("click", function (evt)
-        {
+    /* This function will choose a player to start the game with by clicking on an image.
+    * The variable c is only defined here so can not move to app.js
+    */
+    function choosePlayer() {
+        c.addEventListener("click", function (evt) {
             x = evt.clientX - c.offsetLeft;
             y = evt.clientY - c.offsetTop;
-            if (y > 425 && y < 525)
-            {
-                if (x > 0 && x < 100)
-                {
+            if (y > 425 && y < 525) {
+                if (x > 0 && x < 100) {
                     imagePlayer = "images/char-boy.png";
                     playerChosen = true;
-                }
-                else if (x > 101 && x < 200)
-                {
+                } else if (x > 101 && x < 200) {
                     imagePlayer = "images/char-catgirl.png";
                     playerChosen = true;
-                }
-                else if (x > 201 && x < 300)
-                {
+                } else if (x > 201 && x < 300) {
                     imagePlayer = "images/char-horngirl.png";
                     playerChosen = true;
-                }
-                else if (x > 301 && x < 400)
-                {
+                } else if (x > 301 && x < 400) {
                     imagePlayer = "images/char-pinkgirl.png";
                     playerChosen = true;
-                }
-                else if (x > 401 && x < 500)
-                {
+                } else if (x > 401 && x < 500) {
                     imagePlayer = "images/char-princessgirl.png";
                     playerChosen = true;
                 }
@@ -271,9 +257,9 @@ var Engine = (function (global)
         });
     }
 
-    /* This function shows the game over screen when the lives are finished */
-    function gameEnd()
-    {
+    /* This function shows the game over screen when the lives are finished
+    */
+    function gameEnd() {
         gameOver = true;
         ctx.font = "36px Impact";
         ctx.fillStyle = "white";
