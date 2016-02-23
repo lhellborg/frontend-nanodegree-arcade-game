@@ -95,9 +95,15 @@ Player.prototype.point = function()
     }    
 };
 
-Player.prototype.addPoints = function() {
+Player.prototype.addPoints = function() 
+{
     this.success += 1;
 }
+
+Player.prototype.addLife = function() 
+{
+    this.lives += 1;
+};
 
 Player.prototype.update = function() 
 {
@@ -183,6 +189,25 @@ Thing.prototype.render = function()
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// the heart will give extra life (XLife) which will be a subclass of Thing, but upon collision will give extra lives instead of extra points
+var XLife = function(x, y, image) 
+{
+    Thing.call(this, x, y, image)
+}; 
+
+XLife.prototype = Object.create(Thing.prototype);
+XLife.prototype.constructor = XLife;
+
+XLife.prototype.update = function() 
+{
+    var plx = player.x;
+    var ply = player.y;
+    if (this.x === plx  && this.y === ply) 
+    {
+        player.addLife();
+        this.x += 200;
+    }
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -198,10 +223,10 @@ var player
 
 //set the x position between 0 - 4 adn y position between 0-2
 var key = new Thing(2, 0, "images/Key.png");
-var heart = new Thing(1, 2, 'images/Heart.png');
 var gem = new Thing(4, 1, 'images/GemBlue.png');
-var allThings = [key, heart, gem];
+var allThings = [key, gem];
 
+var heart = new XLife(1, 2, 'images/Heart.png');
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

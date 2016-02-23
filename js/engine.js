@@ -122,8 +122,11 @@ var Engine = (function(global) {
 
         allThings.forEach(function(thing) 
         {
-            thing.update(dt);
+            thing.update();
         });
+
+        heart.update();
+
         //keep track of the lives are finished
         var finished = player.update();
         if(finished) 
@@ -199,6 +202,8 @@ var Engine = (function(global) {
         {
             enemy.render();
         });
+
+        heart.render();
 
         player.render();
     }
