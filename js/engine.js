@@ -34,7 +34,7 @@ var Engine = (function(global) {
 
     var c = document.querySelector("canvas");
     var playerChosen = false;
-    var gameOver = true;
+    var gameOver = false;
 
     function handleMouseClick(evt)
     {
@@ -64,7 +64,7 @@ var Engine = (function(global) {
         update(dt);
 
         // the animation goes on unless gameOver = true from the gameEnd function 
-         if (gameOver) 
+         if (!gameOver) 
          {
             render();
 
@@ -115,28 +115,22 @@ var Engine = (function(global) {
      */
     function updateEntities(dt) 
     {
-        allEnemies.forEach(function(enemy) 
-        {
-            enemy.update(dt);
-        });
-
         allThings.forEach(function(thing) 
         {
-            thing.update();
+            thing.update(dt);
         });
 
-        heart.update();
+         allEnemies.forEach(function(enimy) 
+        {
+            enimy.update(dt);
+        });
 
-        //keep track of the lives are finished
+        //keep track to see if the lives are finished
         var finished = player.update();
         if(finished) 
         {
             gameEnd();
         }
-        //keep track of the lives
-        player.score();
-        //keep track of the points
-        player.point();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -202,8 +196,6 @@ var Engine = (function(global) {
         {
             enemy.render();
         });
-
-        heart.render();
 
         player.render();
     }
@@ -282,15 +274,13 @@ var Engine = (function(global) {
     /* This function shows the game over screen when the lives are finished */
     function gameEnd() 
     {     
-        gameOver = false;
+        gameOver = true;
         ctx.font = "36px Impact";
         ctx.fillStyle = "white";
         ctx.fillText("Game over", 200, 300);
         ctx.lineWidth = 3;
         ctx.strokeStyle = "black";
         ctx.strokeText("Game over",  200, 300);
-        return gameOver;
-
     }
 
     /* Go ahead and load all of the images we know we're going to need to

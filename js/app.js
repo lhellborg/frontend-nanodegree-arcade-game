@@ -107,6 +107,10 @@ Player.prototype.addLife = function()
 
 Player.prototype.update = function() 
 {
+    //keep track of the lives
+    player.score();
+    //keep track of the points
+    player.point();
     return (this.lives < 1);
 };
 
@@ -164,7 +168,7 @@ var Thing = function(x, y, image)
     this.y = y * 80 + 55;
     //the image choosen
     this.sprite = image;
-    this.colour = 1; 
+    this.change = 1; 
 }; 
 
 // when thing is taken by the player, the points update with 1 and the thing moves to the right
@@ -174,8 +178,7 @@ Thing.prototype.update = function() {
     if (this.x === plx  && this.y === ply) 
     {
         player.addPoints();
-        gem.changeColour();
-        thing.changeThing();
+        this.changeMe();
         if (this.x < 150) 
         {
             this.x += 300;
@@ -187,32 +190,24 @@ Thing.prototype.update = function() {
     };
 };
 
-Thing.prototype.changeThing = function() 
+Thing.prototype.changeMe = function() 
 {
     {
-        if (this.colour % 3 === 0) {
+        if (this.change % 6 === 0) {
             this.sprite = 'images/Key.png';
         }
-        else if (this.colour % 2 === 0) 
+        else if (this.change % 5 === 0) 
         {
             this.sprite = 'images/Rock.png';
         }
-        else 
+        else if (this.change % 4 === 0)
         {
             this.sprite = 'images/Star.png';
         }
-    }
-    this.colour += 1;
-};
-
-//changes colour of the gem
-Thing.prototype.changeColour = function() 
-{
-    {
-        if (this.colour % 3 === 0) {
+           if (this.change % 3 === 0) {
             this.sprite = 'images/GemBlue.png';
         }
-        else if (this.colour % 2 === 0) 
+        else if (this.change % 2 === 0) 
         {
             this.sprite = 'images/GemGreen.png';
         }
@@ -221,8 +216,9 @@ Thing.prototype.changeColour = function()
             this.sprite = 'images/GemOrange.png';
         }
     }
-    this.colour += 1;
+    this.change += 1;
 };
+
 
 Thing.prototype.render = function() 
 {
@@ -264,9 +260,9 @@ var player
 //set the x position between 0 - 4 and y position between 0-2
 var thing = new Thing(0, 0, "images/Key.png");
 var gem = new Thing(1, 1, 'images/GemBlue.png');
-var allThings = [thing, gem];
 
 var heart = new XLife(3, 2, 'images/Heart.png');
+var allThings = [thing, gem, heart];
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -279,7 +275,10 @@ document.addEventListener('keyup', function(e)
         40: 'down'
     };
 
-    player.handleInput(allowedKeys[e.keyCode]);
+    //player is not defined until chosenPlayer
+    if (player) {
+        player.handleInput(allowedKeys[e.keyCode]);
+    }
 });
 
 
