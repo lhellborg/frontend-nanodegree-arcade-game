@@ -6,6 +6,7 @@
 * @param {number} speed - the relative speed of the enemy
 */
 var Enemy = function (x, y, speed) {
+    "use strict";
     //initial location
     this.x = x;
     this.y = y;
@@ -21,6 +22,7 @@ var Enemy = function (x, y, speed) {
 * @param {number} dt, a time delta between ticks, recieved from the engine.js
 */
 Enemy.prototype.update = function (dt) {
+    "use strict";
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
@@ -33,7 +35,7 @@ Enemy.prototype.update = function (dt) {
         this.x = 0;
     }
 
-    //upon collision with the player call hte player dead function where the player have to restart
+    //upon collision with the player call the player dead function where the player have to restart
     var plx = player.x;
     var ply = player.y;
     if (this.x < (plx + 30) && this.x > (plx - 70) && this.y === ply) {
@@ -45,6 +47,7 @@ Enemy.prototype.update = function (dt) {
 * @description Draw the enemy on the screen, required method for game
 */
 Enemy.prototype.render = function () {
+    "use strict";
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
@@ -65,6 +68,7 @@ var imagePlayer;
 * @param {number} success- number of points the player should have at the start of the game, good for cheating
 */
 var Player = function (imagePlayer, lives, success) {
+    "use strict";
     // initial location
     this.x = 200;
     this.y = 375;
@@ -81,6 +85,7 @@ var Player = function (imagePlayer, lives, success) {
 * the variable oldLife keeps track of how many lives so the old score can be erased by painting over it with white
 */
 Player.prototype.score = function () {
+    "use strict";
     if (this.lives != this.oldLife) {
         ctx.font = "36px Impact";
         ctx.fillStyle = "white";
@@ -96,6 +101,7 @@ Player.prototype.score = function () {
 * the variable oldSuccess keep track of how many points so the old score can be erased by painting over it with white
 */
 Player.prototype.point = function () {
+    "use strict";
     if (this.success != this.oldSuccess) {
         ctx.font = "36px Impact";
         ctx.fillStyle = "white";
@@ -110,6 +116,7 @@ Player.prototype.point = function () {
 * @description add points to the player by adding 1 to the success variable
 */
 Player.prototype.addPoints = function () {
+    "use strict";
     this.success += 1;
 };
 
@@ -117,6 +124,7 @@ Player.prototype.addPoints = function () {
 * @description add lives to the player by adding 1 to the lives variable
 */
 Player.prototype.addLife = function () {
+    "use strict";
     this.lives += 1;
 };
 
@@ -125,10 +133,11 @@ Player.prototype.addLife = function () {
 * @returns {Boolean} true or false to the statement "this.lives < 1", if true, the game ends otherwise it keeps going
 */
 Player.prototype.update = function () {
+    "use strict";
     //keep track of the lives
-    player.score();
+    this.score();
     //keep track of the points
-    player.point();
+    this.point();
     return (this.lives < 1);
 };
 
@@ -136,15 +145,17 @@ Player.prototype.update = function () {
 * @description removes one life and returns the player to the original position
 */
 Player.prototype.dead = function () {
-        this.lives -= 1;
-        this.x = 200;
-        this.y = 375;
+    "use strict";
+    this.lives -= 1;
+    this.x = 200;
+    this.y = 375;
 };
 
 /**
 * @description draw the player on the canvas
 */
 Player.prototype.render = function () {
+    "use strict";
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
@@ -153,6 +164,7 @@ Player.prototype.render = function () {
 * @param {keypress} userInput - the key pressed
 */
 Player.prototype.handleInput = function (userInput) {
+    "use strict";
     // stay inside the canvas
     if (this.x >= 0 && this.x <= 400 && this.y >= 10 && this.y <= 375) {
         if (userInput === "left" && this.x > 0) {
@@ -182,6 +194,7 @@ Player.prototype.handleInput = function (userInput) {
 * @param {string} image - the image of the thing
 */
 var Thing = function (x, y, image) {
+    "use strict";
     //initial location
     this.x = x * 100;
     this.y = y * 80 + 55;
@@ -193,6 +206,7 @@ var Thing = function (x, y, image) {
 * @description when thing is taken by the player, the points update with 1 and the thing changes image and moves to the right
 */
 Thing.prototype.update = function () {
+    "use strict";
     var plx = player.x;
     var ply = player.y;
     if (this.x === plx && this.y === ply) {
@@ -210,6 +224,7 @@ Thing.prototype.update = function () {
 * @description changes the image of the thing by calling a random function
 */
 Thing.prototype.changeMe = function () {
+    "use strict";
     var randomNr = Math.floor((Math.random() * 10) + 1) //generates a number between 1-10
     switch (randomNr) {
     case 1:
@@ -240,6 +255,7 @@ Thing.prototype.changeMe = function () {
 * @description draw the things on the canvas
 */
 Thing.prototype.render = function () {
+    "use strict";
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
@@ -251,6 +267,7 @@ Thing.prototype.render = function () {
 * @param {string} image - the image of the XLife
 */
 var XLife = function (x, y, image) {
+    "use strict";
     Thing.call(this, x, y, image);
 };
 
@@ -267,6 +284,7 @@ XLife.prototype.constructor = XLife;
 * @description upon collision with the player, the players addLife is called and the instance of XLife will move 2 squares
 */
 XLife.prototype.update = function () {
+    "use strict";
     var plx = player.x;
     var ply = player.y;
     if (this.x === plx && this.y === ply) {
@@ -310,6 +328,7 @@ var allThings = [thing, gem, heart];
 * @description This listens for key presses and sends the keys to your Player.handleInput() method. You don't need to modify this.
 */
 document.addEventListener('keyup', function (e) {
+    "use strict";
     var allowedKeys = {
         37: 'left',
         38: 'up',
