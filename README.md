@@ -1,4 +1,4 @@
-#frontend-nanodegree-arcade-game
+#arcade-game
 #Frogger
 
 ##How to set up the game and run it
